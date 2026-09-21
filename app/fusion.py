@@ -426,24 +426,46 @@ def share(conn, actor, fusion_id: str, name: str) -> str:
     return dest.name
 
 
+GMAIL_RE = re.compile(r"[A-Za-z0-9._%+\-]{1,64}@(?:gmail|googlemail)\.com", re.I)
 MAX_URL = 1900             # 作成画面の URL の長さの上限（長すぎる URL は、ブラウザ・Gmail が開けない）
 
 
-def gmail_url(email: dict, folder_hint: str = "") -> str:
+def gmail_url(email: dict, folder_hint: str = "", to: str | None = None) -> str:
     """Gmail の作成画面を開く URL（宛先なし）。開くだけで、送信はしない。表は添付できないので、本文に要点と共有先の場所を書く。
     日本語は 1 文字が 9 文字ほどに増えるので、URL の長さが上限に収まるまで、本文を短くする（下書きの全文は、文書に残っている）。"""
     tail = (f"\n\n（表と文書は、共有フォルダ「{folder_hint}」に置きました）" if folder_hint
             else "\n\n（表と文書は、別途ファイルを添付してください）")
     subject, body = email["subject"][:120], email["body"][:MAX_BODY]
 
+    q = {"view": "cm", "fs": "1"}
+    if to and GMAIL_RE.fullmatch(to):   # 本人が設定した Gmail アドレスだけ。宛先と、開くアカウントに使う（設定がなければ、宛先なし）
+        q["to"] = to
+        q["authuser"] = to
+
     def build(b: str) -> str:
-        return "https://mail.google.com/mail/?" + urllib.parse.urlencode({"view": "cm", "fs": "1", "su": subject, "body": b}, quote_via=urllib.parse.quote)
+        return "https://mail.google.com/mail/?" + urllib.parse.urlencode({**q, "su": subject, "body": b}, quote_via=urllib.parse.quote)
 
     url = build(body + tail)
     while len(url) > MAX_URL and body:
         body = body[:max(0, int(len(body) * 0.8) - 1)]
         url = build(body + ("…" if body else "") + tail)
     return url
+
+
+def get_gmail(conn, actor) -> str:
+    row = db.one(conn, "SELECT gmail FROM member_pref WHERE member_id=?", (actor.member_id,))
+    return (row["gmail"] or "") if row else ""
+
+
+def set_gmail(conn, actor, address: str) -> None:
+    """本人が、自分の Gmail アドレスを設定する（空にすると解除）。gmail.com / googlemail.com のアドレスだけ。アドレス自体は、監査ログに残さない。"""
+    address = address.strip()
+    if address and not GMAIL_RE.fullmatch(address):
+        raise FusionRefused("Gmail のアドレス（…@gmail.com）を入力してください")
+    db.run(conn, "INSERT INTO member_pref(member_id, gmail) VALUES(?,?) ON CONFLICT(member_id) DO UPDATE SET gmail=excluded.gmail",
+           (actor.member_id, address or None))
+    db.audit(conn, actor.org_id, "member.gmail", actor.member_id, actor.member_id, "設定" if address else "解除")
+    conn.commit()
 
 
 def purge_old(conn, days: int = RETENTION_DAYS) -> int:

@@ -25,6 +25,10 @@ MIRUCON_ENV=dev PORT=8000 python -m app.web owner@example.test
 
 ブラウザで `http://127.0.0.1:8000/login` を開きます。開発用のワンタイムコードは起動したターミナルに表示されます。
 
+### 統合分析で、自分の Gmail アドレスを使う（任意）
+
+トップ画面の「自分の Gmail アドレス」に、自分の gmail.com のアドレスを設定すると、統合分析の「送信の準備」で開く Gmail の作成画面の宛先（To）と開くアカウントに入ります（統合分析がオンのとき表示）。未設定なら宛先なしで開きます。アドレスは、本人だけが設定でき、gmail.com / googlemail.com 以外は受け付けません。送信は、Gmail で人が行います。
+
 ### Node.js版 Mission Room
 
 Node.js 24以上とpnpmを用意します。

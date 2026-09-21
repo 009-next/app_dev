@@ -215,6 +215,8 @@ def init(conn: sqlite3.Connection) -> None:
                  "actor_id TEXT, created_at REAL, status TEXT NOT NULL DEFAULT 'transcribing', transcript TEXT, confirmed_at REAL, result TEXT, why TEXT, "
                  "model TEXT, model_audio TEXT, cost_usd REAL DEFAULT 0)")
     conn.execute("CREATE TABLE IF NOT EXISTS fusion_file(fusion_id TEXT NOT NULL, name TEXT NOT NULL, mime TEXT, data BLOB, PRIMARY KEY(fusion_id, name))")
+    # member_pref: メンバー自身の設定。gmail=送信の準備（Gmail の作成画面）で宛先・アカウントに使う、本人の Gmail アドレス（任意）
+    conn.execute("CREATE TABLE IF NOT EXISTS member_pref(member_id TEXT PRIMARY KEY, gmail TEXT)")
     # image.source: その写真の出どころ（camera / video_frame / call_screen）。通話の画面は第三者が写るため区別する
     have = {r["name"] for r in conn.execute("PRAGMA table_info(image)")}
     if "source" not in have:

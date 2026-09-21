@@ -548,3 +548,50 @@ def test_the_fusion_and_docgen_modules_work_from_a_copied_app_folder_with_no_dem
 def pathlib_app():
     import pathlib
     return pathlib.Path(fusion.__file__).parent
+
+
+# ---- 自分の Gmail アドレス（任意）-------------------------------------------------------------------
+
+@pytest.mark.parametrize("addr", ["me@gmail.com", "a.b+c@googlemail.com", "ME@GMAIL.COM"])
+def test_a_gmail_address_becomes_the_recipient_and_the_account(addr):
+    q = urllib.parse.parse_qs(urllib.parse.urlsplit(fusion.gmail_url({"subject": "s", "body": "b"}, "共有", addr)).query)
+    assert q["to"] == [addr] and q["authuser"] == [addr] and q["view"] == ["cm"]
+
+
+@pytest.mark.parametrize("addr", ["", None, "me@example.com", "me@gmail.com.evil.test", "a b@gmail.com", "me@gmail.com,x@y.z", "x@gmail.co", "me@gmail.com&bcc=x@y.z"])
+def test_anything_but_a_gmail_address_is_not_used(addr):
+    q = urllib.parse.parse_qs(urllib.parse.urlsplit(fusion.gmail_url({"subject": "s", "body": "b"}, "", addr)).query)
+    assert "to" not in q and "authuser" not in q and "bcc" not in q
+
+
+def test_the_url_stays_within_the_limit_with_an_address():
+    assert len(fusion.gmail_url({"subject": "s", "body": "あ" * 5000}, "共有", "someone.long.address@gmail.com")) <= fusion.MAX_URL
+
+
+def test_a_member_sets_and_clears_their_own_address_without_logging_it(conn, alice, bob):
+    fusion.set_gmail(conn, alice, "alice.me@gmail.com")
+    assert fusion.get_gmail(conn, alice) == "alice.me@gmail.com" and fusion.get_gmail(conn, bob) == ""   # 他のメンバーには効かない
+    assert "alice.me" not in json.dumps([dict(r) for r in db.many(conn, "SELECT * FROM audit_log")])
+    for bad in ("x@example.com", "not an address"):
+        with pytest.raises(fusion.FusionRefused, match="Gmail"):
+            fusion.set_gmail(conn, alice, bad)
+    assert fusion.get_gmail(conn, alice) == "alice.me@gmail.com"                                        # 不正な入力では変わらない
+    fusion.set_gmail(conn, alice, "")
+    assert fusion.get_gmail(conn, alice) == ""
+
+
+def test_the_setting_form_shows_only_when_enabled_and_the_link_uses_the_members_address(conn, alice, obj_):
+    ck = login(conn, alice)
+    assert "/settings/gmail" not in get(conn, "/", ck).body.decode()
+    card, image = make_card(conn, alice, obj_)
+    flags(conn)
+    assert "/settings/gmail" in get(conn, "/", ck).body.decode()
+    assert post(conn, "/settings/gmail", {"address": "me.demo@gmail.com"}, ck).status == 303
+    assert post(conn, "/settings/gmail", {"address": "x@example.com"}, ck).status == 400
+    f = factory()
+    fid = fusion.start(conn, alice, card["card_id"], image["image_id"], WAV, "wav", consent=True, jobs=web.JOBS, client_factory=f)
+    fusion.confirm_and_analyze(conn, alice, fid, None, jobs=web.JOBS, client_factory=f)
+    page = get(conn, f"/c/{card['card_id']}", ck).body.decode()
+    assert "to=me.demo%40gmail.com" in page and "authuser=me.demo%40gmail.com" in page
+    post(conn, "/settings/gmail", {"address": ""}, ck)
+    assert "to=me.demo" not in get(conn, f"/c/{card['card_id']}", ck).body.decode()

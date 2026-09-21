@@ -283,7 +283,7 @@ def home(req: Req) -> Response:
                             '<form method="post" action="/objects"><label>名前</label><input name="name" required maxlength="100">'
                             '<label>次回点検日（任意。過ぎるとAIが通知案を作ります）</label><input name="next_check" type="date">'
                             "<button>登録してタグを発行</button></form>"
-                            f'{_external_block(req)}{_vision_setting_block(req)}{_talk_setting_block(req)}{_fusion_setting_block(req)}'
+                            f'{_external_block(req)}{_vision_setting_block(req)}{_talk_setting_block(req)}{_fusion_setting_block(req)}{_gmail_pref_block(req)}'
                             '<form method="post" action="/logout"><button>ログアウト</button></form>')
 
 
@@ -1160,6 +1160,26 @@ def _fusion_setting_block(req: Req) -> str:
             f'<input name="dir" value="{esc(d)}" maxlength="300"><button>共有先を保存</button></form></div>')
 
 
+def _gmail_pref_block(req: Req) -> str:
+    """送信の準備（Gmail の作成画面）で使う、自分の Gmail アドレスの設定。メンバー本人だけ。任意。"""
+    if not fusion.enabled(req.conn, req.actor.org_id):
+        return ""
+    cur = fusion.get_gmail(req.conn, req.actor)
+    return ('<h2>自分の Gmail アドレス（任意）</h2><div class="card">'
+            '<p>統合分析の「送信の準備」で開く Gmail の作成画面に、ここで設定した<b>自分のアドレス</b>を、宛先（To）と、開くアカウントとして入れます。'
+            '未設定なら、宛先なしで開きます。設定できるのは、gmail.com のアドレスだけです。送信は、Gmail であなたが行います。</p>'
+            f'<form method="post" action="/settings/gmail"><label>Gmail アドレス（空にすると解除）</label>'
+            f'<input name="address" type="email" value="{esc(cur)}" maxlength="120" placeholder="you@gmail.com" autocomplete="email">'
+            '<button>保存</button></form></div>')
+
+
+def settings_gmail(req: Req) -> Response:
+    if (r := _need_login(req)):
+        return r
+    fusion.set_gmail(req.conn, req.actor, req.form.get("address", ""))
+    return Response(303, headers=[("Location", "/")])
+
+
 def settings_fusion(req: Req) -> Response:
     if (r := _need_login(req)):
         return r
@@ -1208,7 +1228,7 @@ def _fusion_result_html(req: Req, card, f: dict) -> str:
     if d:
         choices += "".join(f'<form method="post" action="/f/{esc(fid)}/share/{n}"><button class="sub">{lab}を共有フォルダへコピー</button></form>'
                            for n, lab in (("table.xlsx", "表"), ("report.docx", "文書")))
-    choices += f'<a class="btn" href="{esc(fusion.gmail_url(r["email"], hint))}" target="_blank" rel="noopener noreferrer">送信の準備（Gmailで編集して送る）</a>'
+    choices += f'<a class="btn" href="{esc(fusion.gmail_url(r["email"], hint, fusion.get_gmail(req.conn, req.actor)))}" target="_blank" rel="noopener noreferrer">送信の準備（Gmailで編集して送る）</a>'
     nxt = "".join(f'<li>{esc(n["label"])}<br><span class="muted">{esc(n["reason"])}</span></li>' for n in r.get("next_work", []))
     if r.get("date_candidates"):
         nxt += "".join(f'<li class="muted">日付の候補: {esc(c)}</li>' for c in r["date_candidates"])
@@ -1305,7 +1325,7 @@ def fusion_share(req: Req, fusion_id: str, name: str) -> Response:
 
 
 ROUTES = [
-    ("POST", r"/settings/fusion", settings_fusion), ("POST", r"/settings/fusion-dir", settings_fusion_dir),
+    ("POST", r"/settings/gmail", settings_gmail), ("POST", r"/settings/fusion", settings_fusion), ("POST", r"/settings/fusion-dir", settings_fusion_dir),
     ("POST", r"/c/([\w\-]+)/fusion/([\w\-]+)", card_fusion_start), ("POST", r"/f/([\w\-]+)/confirm", fusion_confirm),
     ("GET", r"/f/([\w\-]+)/file/([\w.\-]+)", fusion_file), ("POST", r"/f/([\w\-]+)/share/([\w.\-]+)", fusion_share),
     ("GET", r"/o/([\w\-]+)/talk", talk_page), ("POST", r"/o/([\w\-]+)/talk/start", talk_start),
