@@ -1,0 +1,5 @@
+# 検証・録画用（アプリの実行には不要）
+numpy
+opencv-python
+playwright
+qrcode

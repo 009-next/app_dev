@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+*.db
+*.db-journal
+.env
+app/data/
+verification/assets/*
+!verification/assets/README.md
+verification/output/
