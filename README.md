@@ -64,8 +64,6 @@ APIキーは環境変数で設定し、ソース、Git、チャット、画面�
 - [既存の提出資料・デモ動画](./hackathon_materials/)
 - [Mission Room発表資料](./hackathon-kit/Connect-Force_ハッカソン発表資料_20260921_E2E_最終版_v3.pptx)
 - [来場者向けパンフレット](./hackathon-kit/Connect-Force_来場者パンフレット.pdf)
-- [Qiita記事下書き](./hackathon-kit/qiita-connect-force.md)
-- [Zenn記事下書き](./hackathon-kit/zenn-connect-force.md)
 
 ## ライセンス
 
