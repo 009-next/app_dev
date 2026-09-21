@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""統合分析（app/fusion.py）を、本番の経路で、実 API を通して測る。台本: senario.txt（建設現場2.jpg を共有画面・デモ用ボイスで音声分析）。
+"""統合分析（app/fusion.py）を、本番の経路で、実 API を通して測る。台本: senario.txt（site.jpg を共有画面・デモ用ボイスで音声分析）。
 
     python run_fusion_probe.py --yes --transcribe-only              # 音声を文字にするだけ（安い）
     python run_fusion_probe.py --yes --repeats 3 --max-cost 0.6 [--open x,y,w,h ...] [--from-video]
 
-- 画像: 建設現場2.jpg を、端末のフィルターと同じ計算（make_call_scenes.reveal_filter）で全面ぼかし→開ける範囲だけ元に戻す。
+- 画像: site.jpg を、端末のフィルターと同じ計算（make_call_scenes.reveal_filter）で全面ぼかし→開ける範囲だけ元に戻す。
   --from-video を付けると、画像を 1 コマの動画にして、コマを抜き出した画像を使う（動画が撮れないときの代わりの入力）。
 - 音声: デモ用ボイス（m4a）を、ffmpeg で 16kHz・モノラルの wav にして使う（アプリの受け口は wav / mp3）。
 - 通すもの: fusion.start → 文字の確認 → fusion.confirm_and_analyze（AI の呼び出しは本番の経路）。生成した xlsx / docx / 赤丸の画像は 結果/fusion_* に保存。

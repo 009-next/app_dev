@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """統合分析のデモの通しを、実ブラウザ（インストール済みの Chrome）で実行して、動画と画面の画像に記録する。検証・録画用の道具（アプリの依存ではない）。
 
-    python record_demo.py --yes [--out ../your_folder/デモ動画]
+    python record_demo.py --yes [--out 出力フォルダ]
 
 流れ（senario.txt に対応）:
-  1. 建設現場2.jpg を 1 コマにした動画を、「通話の録画として取り込む」で取り込む（画面共有が使えないときの代わりの入力）。
+  1. site.jpg を 1 コマにした動画を、「通話の録画として取り込む」で取り込む（画面共有が使えないときの代わりの入力）。
   2. なぞって囲む形で、カラーコーンと単管の所だけを開ける（面積を端末が測って表示）。
   3. カードを作る → 統合分析: デモ用ボイスを文字にする → 確認 → 会話と画面の意味統合 → 赤丸・表・文書・メール下書き。
   4. 次の選択肢: 共有（指定フォルダへコピー）・送信（Gmail の作成画面のリンク。開かない）。
@@ -113,7 +113,7 @@ def main() -> None:
             page.screenshot(path=str(out / f"{name}.png")); log.append(name)
 
         # 1) 取り込み
-        page.goto(f"{BASE}/o/{obj['obj_id']}/new"); caption(page, "1. 共有画面（建設現場2.jpg を 1 コマにした動画）を、通話の録画として取り込む"); page.wait_for_timeout(1500)
+        page.goto(f"{BASE}/o/{obj['obj_id']}/new"); caption(page, "1. 共有画面（site.jpg を 1 コマにした動画）を、通話の録画として取り込む"); page.wait_for_timeout(1500)
         page.select_option("#mask-mode", "extended"); page.select_option("#mask-tool", "path"); page.check(".mask-rec-as-call")
         page.evaluate("""async () => { const r = await fetch('/demo-assets/frame.mp4'); const b = await r.blob(); const f = new File([b], 'call.mp4', {type: 'video/mp4'});
             const dt = new DataTransfer(); dt.items.add(f); const i = document.querySelector('.mask-widget[data-role=before] .mask-file'); i.files = dt.files;
