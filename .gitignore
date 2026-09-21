@@ -1,4 +1,15 @@
-# Dependencies and local runtime outputs
+# Python runtime data
+__pycache__/
+*.pyc
+.pytest_cache/
+*.db
+*.db-journal
+app/data/
+verification/assets/*
+!verification/assets/README.md
+verification/output/
+
+# Node and Eve runtime outputs
 node_modules/
 .eve/
 .output/
@@ -8,7 +19,7 @@ node_modules/
 dist/
 *.tsbuildinfo
 
-# Secrets and private runtime data
+# Secrets and local data
 .env*
 !.env.example
 examples/orca_router_api/
@@ -16,14 +27,26 @@ data/card-drafts/*.json
 data/mission-drafts/
 data/verification/
 
-# Internal notes and earlier working materials are not part of the public release
+# Local internal notes and prior working materials
 AGENTS.md
 CHANGELOG.md
 articles/
-docs/
 presentations/
 hackathon-kit/.build/
 hackathon-kit/revised/
 hackathon-kit/*検証*.md
 hackathon-kit/Connect-Force_ハッカソン発表資料*.pptx
 !hackathon-kit/Connect-Force_ハッカソン発表資料_20260921_E2E_最終版_v3.pptx
+
+# Internal design and maintenance notes (not part of the public submission)
+docs/BUSINESS_EVALUATION_GUIDE.md
+docs/MAINTENANCE_GUIDE.md
+docs/MISSION_ROOM_*.md
+docs/MULTIUSER_P2_DESIGN.md
+docs/ORCA_AUDIO_ANALYSIS.md
+docs/SEMANTIC_SCREEN_SAFETY_CHANGE.md
+docs/VIDEO_SCREEN_FRAME_CHANGE.md
+docs/VOICE_INPUT_UAT.md
+docs/VOICE_INTENT_MISSION.md
+docs/prompts/
+docs/templates/

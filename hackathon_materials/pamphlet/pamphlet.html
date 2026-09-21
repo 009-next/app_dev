@@ -1,0 +1,78 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>Connect-Force パンフレット</title>
+<style>
+@page{size:A4;margin:0}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;color:#14213d;background:#fff}
+.page{width:210mm;height:297mm;position:relative;overflow:hidden;page-break-after:always;padding:14mm 15mm}
+.hero{background:linear-gradient(135deg,#2f80ff,#3ec5ff);color:#fff;margin:-14mm -15mm 5mm;padding:11mm 15mm 8mm;position:relative}
+.hero:after{content:"";position:absolute;right:8mm;top:4mm;width:40mm;height:40mm;opacity:.18;
+ background:radial-gradient(circle at 30% 30%,#fff 0 2px,transparent 3px),radial-gradient(circle at 70% 60%,#fff 0 2px,transparent 3px),radial-gradient(circle at 50% 85%,#fff 0 1.5px,transparent 2.5px)}
+.hero small{letter-spacing:.2em;font-size:9pt;opacity:.9}
+.hero h1{font-size:30pt;margin:2mm 0 1mm;letter-spacing:.02em}
+.hero p{font-size:12pt;margin:0;opacity:.95}
+h2{font-size:13pt;color:#2f80ff;margin:4mm 0 2mm;border-left:4px solid #3ec5ff;padding-left:3mm}
+p,li{font-size:10.2pt;line-height:1.65;margin:0}
+ul{margin:1mm 0;padding-left:5mm}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4mm}
+.card{border:1px solid #d5e4ff;border-radius:4mm;padding:3mm;background:#f5f9ff}
+.card b{display:block;color:#2f80ff;font-size:11pt;margin-bottom:1mm}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:3mm;margin-top:2mm}
+.step{border-radius:4mm;padding:2mm 3mm;background:#eef5ff;border:1px solid #d5e4ff}
+.step i{font-style:normal;display:inline-block;width:6mm;height:6mm;line-height:6mm;text-align:center;border-radius:50%;background:linear-gradient(135deg,#2f80ff,#3ec5ff);color:#fff;font-weight:700;font-size:9pt;margin-right:2mm}
+.step span{font-size:9.6pt}
+img.s{width:100%;border-radius:3mm;border:1px solid #d5e4ff;display:block}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:5mm}
+.cap{font-size:8.5pt;color:#5b6f94;margin-top:1mm}
+.foot{position:absolute;left:15mm;right:15mm;bottom:10mm;display:flex;align-items:center;gap:5mm;border-top:1px solid #d5e4ff;padding-top:4mm}
+.foot img{width:26mm;height:26mm}
+.pill{display:inline-block;background:#2f80ff;color:#fff;border-radius:99px;padding:.6mm 3mm;font-size:8.5pt;margin:0 1mm 1mm 0}
+.band{background:#0f2447;color:#fff;border-radius:4mm;padding:3mm 5mm;margin-top:3mm}
+.band p{color:#fff}
+</style></head><body>
+<section class="page">
+ <div class="hero"><small>HACKATHON 2026 / 見るconnect</small><h1>Connect-Force</h1><p>会話と画面から、次の業務を組み立てる「物エージェント」</p></div>
+ <h2>ひとことで</h2>
+ <p>物や場所に貼ったQR・NFCにかざすと、その物の<b>担当・記録・これまでの経緯</b>が開きます。作業の成果は、写真と声から「動くカード」にして、リンクで渡せます。その裏で、状況を見て動くのが物エージェントです。</p>
+ <div class="band"><p><b>AIが選び、コードが守り、人が確定する。</b> 送信・共有範囲の拡大・削除は、AIにはできません。</p></div>
+ <h2>3つのポイント</h2>
+ <div class="grid">
+  <div class="card"><b>① 見える</b><p>タグを読むと、その物のページが開く。経緯と今の状態を、根拠のカードつきで要約。</p></div>
+  <div class="card"><b>② 守る</b><p>顔・ナンバー・書類は、端末で隠してから送る。通話画面は「開けた所だけ」をAIが見る。</p></div>
+  <div class="card"><b>③ 動く</b><p>会話を確認して同意すれば、資料・メールの下書きまで。送るのは、人。</p></div>
+ </div>
+ <h2>デモの流れ</h2>
+ <div class="steps">
+  <div class="step"><i>1</i><span>現場の画像を共有し、全面を隠す</span></div>
+  <div class="step"><i>2</i><span>対象の物だけ、なぞって囲んで開ける</span></div>
+  <div class="step"><i>3</i><span>電話の声を文字にして、確認する</span></div>
+  <div class="step"><i>4</i><span>会話と画面を結びつけ、対象に赤丸</span></div>
+  <div class="step"><i>5</i><span>Excel・Word・メールの下書きを作成</span></div>
+  <div class="step"><i>6</i><span>共有／送信の準備（人が押す）</span></div>
+ </div>
+ <h2>デモ画面</h2>
+ <div class="two"><div><img class="s" src="shot1.png"><p class="cap">全面を隠した画面で、対象だけを開ける（開けた面積は端末が測る）</p></div>
+ <div><img class="s" src="shot2.png"><p class="cap">会話と結びついた対象（カラーコーン・単管）に赤丸</p></div></div>
+</section>
+<section class="page">
+ <h2 style="margin-top:0">自動で作られるもの</h2>
+ <div class="two"><div><img class="s" src="shot3.png"></div>
+ <div><ul><li><b>表（Excel）</b>：会話で出た数量を、出所つきで整理</li><li><b>説明（Word）</b>：経緯・見えているもの・次の作業</li><li><b>メール（Gmail）</b>：宛先なしの下書き。開いて直して、送るのは人</li><li><b>共有</b>：オーナーが決めたフォルダへコピー</li></ul></div></div>
+ <h2>安心のしくみ</h2>
+ <ul>
+  <li>写真・画面は、<b>端末で隠してから</b>送ります。元の画像は、サーバーにもAIにも届きません。</li>
+  <li>音声は<b>保存しません</b>。文字を確認するまで、画像はAIに渡しません。</li>
+  <li>AIの出力は、コードが検査します（引用の実在・個人情報・人名・指示への追従）。</li>
+  <li>会話や画面をAIに渡す機能は<b>既定オフ</b>。組織のオーナーの設定と、そのつどの確認が揃ったときだけ動きます。</li>
+  <li>共有・送信は、<b>人が押したときだけ</b>。AIは実行しません。</li>
+ </ul>
+ <h2>測ってから決めました</h2>
+ <div class="grid">
+  <div class="card"><b>6 / 6</b><p>統合分析の完了（デモ音声と現場画像）</p></div>
+  <div class="card"><b>約 $0.055</b><p>統合分析 1 回の費用（Claude の最上位を 1 回）</p></div>
+  <div class="card"><b>839 件</b><p>自動テスト。門を外すと失敗する変異 35 か所</p></div>
+ </div>
+ <h2>使っている技術</h2>
+ <p><span class="pill">Claude</span><span class="pill">Orca Router</span><span class="pill">Gemini（音声）</span><span class="pill">Python</span><span class="pill">Webアプリ（スマホ・PC）</span></p>
+ <p style="margin-top:2mm">Excel・Word の生成は標準ライブラリだけ。追加の依存を増やしていません。</p>
+ <div class="foot"><img src="qr.png"><div><p><b>コードとデモ動画は GitHub で公開しています</b></p><p>https://github.com/009-next/app_dev</p><p class="cap">審査員の方も、リポジトリの README の手順で、そのまま動かせます。</p></div></div>
+</section></body></html>
