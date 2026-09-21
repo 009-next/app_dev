@@ -1,0 +1,43 @@
+{
+  "name": "connect-force",
+  "version": "0.9.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#*": "./agent/*",
+    "#evals/*": "./evals/*"
+  },
+  "scripts": {
+    "pc": "node --experimental-strip-types pc/server.ts",
+    "build": "eve build",
+    "dev": "eve dev",
+    "eval": "eve eval",
+    "eval:business": "node --experimental-strip-types scripts/measure-business-eval.ts",
+    "eval:orca": "node --experimental-strip-types scripts/orca-e2e.ts",
+    "eval:orca-audio": "node --experimental-strip-types scripts/orca-audio-e2e.ts",
+    "info": "eve info",
+    "periodic:check": "node --experimental-strip-types scripts/periodic-check.ts",
+    "secret:scan": "powershell -ExecutionPolicy Bypass -File scripts/secret-scan.ps1",
+    "start": "eve start",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@ai-sdk/openai-compatible": "3.0.53",
+    "@ai-sdk/provider": "4.0.17",
+    "@ai-sdk/provider-utils": "5.0.45",
+    "@vercel/connect": "2.2.0",
+    "ai": "^7.0.105",
+    "eve": "^0.59.1",
+    "sharp": "^0.35.4",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "24.x",
+    "typescript": "7.0.2"
+  },
+  "engines": {
+    "node": "24.x"
+  },
+  "packageManager": "pnpm@11.19.0"
+}

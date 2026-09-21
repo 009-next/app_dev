@@ -1,0 +1,29 @@
+# Dependencies and local runtime outputs
+node_modules/
+.eve/
+.output/
+.build/
+.codex-*/
+.vercel/
+dist/
+*.tsbuildinfo
+
+# Secrets and private runtime data
+.env*
+!.env.example
+examples/orca_router_api/
+data/card-drafts/*.json
+data/mission-drafts/
+data/verification/
+
+# Internal notes and earlier working materials are not part of the public release
+AGENTS.md
+CHANGELOG.md
+articles/
+docs/
+presentations/
+hackathon-kit/.build/
+hackathon-kit/revised/
+hackathon-kit/*検証*.md
+hackathon-kit/Connect-Force_ハッカソン発表資料*.pptx
+!hackathon-kit/Connect-Force_ハッカソン発表資料_20260921_E2E_最終版_v3.pptx
